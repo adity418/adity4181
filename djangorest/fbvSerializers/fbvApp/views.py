@@ -24,7 +24,7 @@ def student_list(request):
 @api_view(['GET','PUT',"DELETE"])
 def student_detail(request, pk):
     try:
-        student = Student.object.get(pk=pk)
+        student = Student.objects.get(pk=pk)
     except Student.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
@@ -39,6 +39,6 @@ def student_detail(request, pk):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    elif request.methods =='DELETE':
+    elif request.method =='DELETE':
         student.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
