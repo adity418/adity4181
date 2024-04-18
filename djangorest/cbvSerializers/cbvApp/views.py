@@ -8,10 +8,25 @@ from django.http import Http404
 
 from rest_framework import generics,mixins
 from rest_framework import viewsets
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+
+class StudentPagination(LimitOffsetPagination):
+    page_size = 2
 
 class StudentViewSet(viewsets.ModelViewSet): #ReadOnlyModelViewSet
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    pagination_class = LimitOffsetPagination
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_fields = ['name','score']
+    # filter_backends = [filters.SearchFilter]
+    # search_fields = ['id', 'name'] 
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['id', 'name']
+    ordering = ['id']  #default odering
+
 
 """
 class StudentList(generics.ListCreateAPIView):
